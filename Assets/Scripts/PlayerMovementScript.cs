@@ -16,6 +16,7 @@ public class PlayerMovementScript : MonoBehaviour
     public float playerSpeed = 1.5f;
     public float playerSprint = 3.0f;
     public bool isAiming;
+    public bool isFiring;
 
     [Header("Player Camera Movement")]
     public Transform playerCamera;
@@ -70,7 +71,7 @@ public class PlayerMovementScript : MonoBehaviour
     {
         
 
-        isAiming = aimCam.activeInHierarchy;
+        //isAiming = aimCam.activeInHierarchy;
 
         onSurface = Physics.CheckSphere(surfaceCheck.position, surfaceDistance, surfaceMask);
 
@@ -86,12 +87,17 @@ public class PlayerMovementScript : MonoBehaviour
         if (canMove)
         {
             PlayerMovement();
-            Sprint();
+            if(!isAiming && !isFiring)
+            {
+                Sprint();
+            }
         }
-        if (canJump)
+        if (canJump && !isAiming && !isFiring)
         {
             JumpStart();
         }
+
+        HandleRifleState();
 
     }
 
@@ -104,7 +110,7 @@ public class PlayerMovementScript : MonoBehaviour
 
         if(direction.magnitude > 0.1f)
         {
-            if (!Input.GetButton("Sprint"))
+            if (!Input.GetButton("Sprint") || isAiming || isFiring || verticalAxis <= 0)
             {
                 animator.SetBool("Walk", true);
             }
@@ -239,4 +245,23 @@ public class PlayerMovementScript : MonoBehaviour
         yield return new WaitForSeconds(0.2f);
         playerDamageIndicator.SetActive(false);
     }
+
+
+
+
+
+// Rifle Animations
+
+    void HandleRifleState()
+    {
+        animator.SetBool("Aiming", isAiming);
+        animator.SetBool("Firing", isFiring);
+        if(isAiming || isFiring)
+        {
+            animator.SetBool("Running", false);
+        }
+    }
+
+
+
 }

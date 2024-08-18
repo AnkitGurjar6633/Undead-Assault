@@ -72,37 +72,43 @@ public class Rifle : MonoBehaviour
 
             if (Input.GetButton("Fire1") && nextShotTimer <= 0f)
             {
-                player.isAiming = true;
-                animator.SetBool("Fire", true);
-                animator.SetBool("Idle", false);
+                //player.isAiming = true;
+                player.isFiring = true;
+                //animator.SetBool("Fire", true);
+                //animator.SetBool("Idle", false);
                 nextShotTimer = 1f / fireRate;
                 Shoot();
             }
-            else if(Input.GetButton("Fire1") && Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow))
-            {
-                player.isAiming = true;
-                animator.SetBool("Idle", false);
-                animator.SetBool("FireWalk", true);
-            }
+            //else if(Input.GetButton("Fire1") && Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow))
+            //{
+            //    player.isFiring = true;
+            //    //animator.SetBool("Idle", false);
+            //    //animator.SetBool("FireWalk", true);
+            //}
             else if(Input.GetButton("Fire2") && Input.GetButton("Fire1"))
             {
-                player.isAiming = true;
-                animator.SetBool("Idle", false);
-                animator.SetBool("IdleAim", true);
-                animator.SetBool("FireWalk", true);
-                animator.SetBool("Walk", true);
-                animator.SetBool("Reloading", false);
+                //player.isAiming = true;
+                player.isFiring = true;
+                //animator.SetBool("Idle", false);
+                //animator.SetBool("IdleAim", true);
+                //animator.SetBool("FireWalk", true);
+                //animator.SetBool("Walk", true);
+                //animator.SetBool("Reloading", false);
             }
             else
             {
                 if (!Input.GetButton("Fire1"))
                 {
-                    player.isAiming = false;
-                    animator.SetBool("Fire", false);
-                    animator.SetBool("FireWalk", false);
+                    player.isFiring = false;
+                    //animator.SetBool("Fire", false);
+                    //animator.SetBool("FireWalk", false);
 
                 }
-                animator.SetBool("Idle", true);
+                if (!Input.GetButton("Fire2"))
+                {
+                    player.isAiming = false;
+                }
+                //animator.SetBool("Idle", true);
             }
         }
     }

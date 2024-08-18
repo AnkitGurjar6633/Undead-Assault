@@ -12,6 +12,8 @@ public class SwitchCamera : MonoBehaviour
 
     public Animator animator;
 
+    public PlayerMovementScript player;
+
 
     // Start is called before the first frame update
     void Start()
@@ -24,10 +26,12 @@ public class SwitchCamera : MonoBehaviour
     {
         if (Input.GetButton("Fire2") && Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow))
         {
-            animator.SetBool("Idle", false);
-            animator.SetBool("IdleAim", true);
-            animator.SetBool("Walk", true);
-            animator.SetBool("RifleWalk", true);
+            //animator.SetBool("Idle", false);
+            //animator.SetBool("IdleAim", true);
+            //animator.SetBool("Walk", true);
+            //animator.SetBool("RifleWalk", true);
+
+            player.isAiming = true;
 
 
             aimCam.SetActive(true);
@@ -37,10 +41,12 @@ public class SwitchCamera : MonoBehaviour
         }
         else if (Input.GetButton("Fire2"))
         {
-            animator.SetBool("Idle", false);
-            animator.SetBool("IdleAim", true);
-            animator.SetBool("Walk", false);
-            animator.SetBool("RifleWalk", false);
+            //animator.SetBool("Idle", false);
+            //animator.SetBool("IdleAim", true);
+            //animator.SetBool("Walk", false);
+            //animator.SetBool("RifleWalk", false);
+
+            player.isAiming = true;
 
 
             aimCam.SetActive(true);
@@ -50,9 +56,11 @@ public class SwitchCamera : MonoBehaviour
         }
         else
         {
-            animator.SetBool("Idle", true);
-            animator.SetBool("IdleAim", false); 
-            animator.SetBool("RifleWalk", false);
+            //animator.SetBool("Idle", true);
+            //animator.SetBool("IdleAim", false); 
+            //animator.SetBool("RifleWalk", false);
+
+            player.isAiming = false;
 
 
             aimCam.SetActive(false);
