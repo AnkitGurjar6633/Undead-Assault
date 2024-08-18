@@ -33,7 +33,9 @@ public class RiflePickUp : MonoBehaviour
                 playerPunch.enabled = false;
                 pickUpRifle.SetActive(false);
                 playerRifle.SetActive(true);
-            }
+
+                ObjectiveComplete.instance.Objective1Done();
+            }  
         }
     }
 }

@@ -14,7 +14,7 @@ public class Rifle : MonoBehaviour
 
     [Header("Rifle Ammunations")]
     public int magHolsterSize = 100;
-    private int magsRemaining;
+    public int magsRemaining;
     public int magSize = 30;
     public float reloadTimer = 2.0f;
     private int ammoInCurrentMag ;
@@ -25,12 +25,21 @@ public class Rifle : MonoBehaviour
     public ParticleSystem muzzleSpark;
     public GameObject woodHitEffect;
     public GameObject bloodEffect;
+    public GameObject impactEffect;
+
+    [Header("Sounds & UI")]
+    public GameObject AmmoOutUI;
+    public GameObject ammoUI;
+    public AudioClip shootingSound;
+    public AudioClip reloadingSound;
+    private AudioSource audioSource;
+
 
     [Header("Misc")]
     public PlayerMovementScript player;
     public Transform playerHand;
     public Animator animator;
-    public GameObject ammoUI;
+    private bool noAmmo;
 
     // Start is called before the first frame update
     void Awake()
@@ -39,10 +48,15 @@ public class Rifle : MonoBehaviour
         transform.SetParent(playerHand);
         ammoInCurrentMag = magSize;
 
-        magsRemaining = magHolsterSize;
+        magsRemaining = magHolsterSize/10;
 
         AmmoUI.instance.UpdateAmmoText(ammoInCurrentMag);
         AmmoUI.instance.UpdateMagText(magsRemaining);
+    }
+
+    public void Start()
+    {
+        audioSource = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -95,9 +109,10 @@ public class Rifle : MonoBehaviour
 
     private void Shoot()
     {
-        if(magsRemaining == 0)
+        if(noAmmo)
         {
             // NO AMMO left
+            StartCoroutine(ShowAmmoOutUI());
             return;
         }
 
@@ -111,6 +126,7 @@ public class Rifle : MonoBehaviour
 
 
         muzzleSpark.Play();
+        audioSource.PlayOneShot(shootingSound);
         RaycastHit hitInfo;
 
         if(Physics.Raycast(cam.transform.position, cam.transform.forward, out hitInfo, shootingRange))
@@ -143,38 +159,85 @@ public class Rifle : MonoBehaviour
                 GameObject bloodEffectClone = Instantiate(bloodEffect, hitInfo.point, Quaternion.LookRotation(hitInfo.normal));
                 Destroy(bloodEffectClone, 1f);
             }
+            else
+            {
+                GameObject hitEffectClone = Instantiate(impactEffect, hitInfo.point, Quaternion.LookRotation(hitInfo.normal));
+                Destroy(hitEffectClone, 1f);
+            }
 
         }
         if (ammoInCurrentMag == 0)
         {
+            if(magsRemaining == 0)
+            {
+                noAmmo = true;
+                return;
+            }
             Debug.Log("0 Ammo");
-            StartCoroutine(Reload());
+            //StartCoroutine(Reload());
+            ReloadStart();
             magsRemaining--;
             AmmoUI.instance.UpdateMagText(magsRemaining);
         }
     }
 
-    IEnumerator Reload()
+    //IEnumerator Reload()
+    //{
+    //    player.playerSpeed = 0f;
+    //    player.playerSprint = 0f;
+
+    //    isReloading = true;
+    //    Debug.Log("Reloading");
+
+    //    audioSource.PlayOneShot(reloadingSound);
+
+
+    //    animator.SetBool("Reloading", true);
+
+    //    yield return new WaitForSeconds(reloadTimer);
+
+    //    animator.SetBool("Reloading", false);
+    //    ammoInCurrentMag = magSize;
+    //    AmmoUI.instance.UpdateAmmoText(ammoInCurrentMag);
+    //    isReloading = false;
+    //    nextShotTimer = 0;
+
+    //    player.playerSpeed = 1.5f;
+    //    player.playerSprint = 3.0f;
+    //}
+
+    public void ReloadStart()
     {
-        player.playerSpeed = 0f;
-        player.playerSprint = 0f;
-
         isReloading = true;
-        Debug.Log("Reloading");
-
-        //play sound
-
-
         animator.SetBool("Reloading", true);
+        audioSource.PlayOneShot(reloadingSound);
+    }
 
-        yield return new WaitForSeconds(reloadTimer);
-
+    public void ReloadEnd()
+    {
         animator.SetBool("Reloading", false);
         ammoInCurrentMag = magSize;
+        AmmoUI.instance.UpdateAmmoText(ammoInCurrentMag);
         isReloading = false;
         nextShotTimer = 0;
+    }
 
-        player.playerSpeed = 1.5f;
-        player.playerSprint = 3.0f;
+    public void NoMove()
+    {
+        player.canMove = false;
+        player.canJump = false;
+    }
+
+    public void SetMove()
+    {
+        player.canMove = true;
+        player.canJump = true;
+    }
+
+    IEnumerator ShowAmmoOutUI()
+    {
+        AmmoOutUI.SetActive(true);
+        yield return new WaitForSeconds(5f);
+        AmmoOutUI.SetActive(false);
     }
 }

@@ -27,9 +27,9 @@ public class Zombie1 : MonoBehaviour
     [Header("Zombie Animations")]
     public Animator animator;
 
-    [Header("Zombie Attacking")]
-    public float timeBtwAttack;
-    bool previousAttack;
+    //[Header("Zombie Attacking")]
+    //public float timeBtwAttack;
+    //bool previousAttack;
 
     [Header("Zombie States")]
     public float visionRadius;
@@ -113,31 +113,45 @@ public class Zombie1 : MonoBehaviour
         animator.SetBool("Running", false);
         animator.SetBool("Walking", false);
 
-        if (!previousAttack)
+        //if (!previousAttack)
+        //{
+        //    RaycastHit hitInfo;
+        //    if(Physics.Raycast(AttackingRaycastArea.transform.position, AttackingRaycastArea.transform.forward, out hitInfo, attackingRadius))
+        //    {
+        //        Debug.Log("aatack");
+        //        PlayerMovementScript playerBody = hitInfo.transform.GetComponent<PlayerMovementScript>();
+
+        //        if (playerBody != null)
+        //        {
+        //            playerBody.PlayerHitDamage(attackDamage);
+        //        }
+
+        //    }
+        //    previousAttack = true;
+        //    Invoke(nameof(ActiveAttacking), timeBtwAttack);
+        //}
+    }
+
+    public void Attack()
+    {
+        RaycastHit hitInfo;
+        if (Physics.Raycast(AttackingRaycastArea.transform.position, AttackingRaycastArea.transform.forward, out hitInfo, attackingRadius))
         {
-            RaycastHit hitInfo;
-            if(Physics.Raycast(AttackingRaycastArea.transform.position, AttackingRaycastArea.transform.forward, out hitInfo, attackingRadius))
+            Debug.Log("aatack");
+            PlayerMovementScript playerBody = hitInfo.transform.GetComponent<PlayerMovementScript>();
+
+            if (playerBody != null)
             {
-                Debug.Log("aatack");
-                PlayerMovementScript playerBody = hitInfo.transform.GetComponent<PlayerMovementScript>();
-
-                if (playerBody != null)
-                {
-                    playerBody.PlayerHitDamage(attackDamage);
-                }
-
-                
-
+                playerBody.PlayerHitDamage(attackDamage);
             }
-            previousAttack = true;
-            Invoke(nameof(ActiveAttacking), timeBtwAttack);
+
         }
     }
 
-    private void ActiveAttacking()
-    {
-        previousAttack = false;
-    }
+    //private void ActiveAttacking()
+    //{
+    //    previousAttack = false;
+    //}
 
     public void ZombieDamaged(float damage)
     {

@@ -40,9 +40,10 @@ public class VehicleController : MonoBehaviour
     public GameObject Player;
 
     [Header("Vehicle Hitting")]
-    public float hitRange = 2f;
+    public float hitRange = 3f;
     private float hitDamage = 100f;
     public GameObject bloodEffect;
+    public GameObject destroyEffect;
     public Camera cam;
 
 
@@ -82,6 +83,7 @@ public class VehicleController : MonoBehaviour
         if(!isInVehicle && Vector3.Distance(transform.position, Player.transform.position) < interactionRadius && Input.GetKeyDown(KeyCode.F))
         {
               isInVehicle = true;
+            ObjectiveComplete.instance.Objective3Done();
         }
         else if(isInVehicle && Input.GetKeyDown(KeyCode.F))
         {
@@ -149,12 +151,13 @@ public class VehicleController : MonoBehaviour
 
         if (Physics.Raycast(cam.transform.position, cam.transform.forward, out hitInfo, hitRange))
         {
-           
 
             Zombie1 zombie1 = hitInfo.transform.GetComponent<Zombie1>();
 
             Zombie2 zombie2 = hitInfo.transform.GetComponent<Zombie2>();
-            
+
+            DamagableObject damagableObject = hitInfo.transform.GetComponent<DamagableObject>();
+
             if (zombie1 != null)
             {
                 zombie1.ZombieDamaged(hitDamage);
@@ -168,6 +171,12 @@ public class VehicleController : MonoBehaviour
                 GameObject bloodEffectClone = Instantiate(bloodEffect, hitInfo.point, Quaternion.LookRotation(hitInfo.normal));
                 zombie2.GetComponent<CapsuleCollider>().enabled = false;
                 Destroy(bloodEffectClone, 1f);
+            }
+            else if (damagableObject != null)
+            {
+                GameObject destroyEffectClone = Instantiate(destroyEffect, hitInfo.point, Quaternion.LookRotation(hitInfo.normal));
+                damagableObject.HitDamage(hitDamage);
+                Destroy(destroyEffectClone, 1f);
             }
 
         }

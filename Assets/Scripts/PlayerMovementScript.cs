@@ -11,7 +11,8 @@ public class PlayerMovementScript : MonoBehaviour
     public HealthBar healthBar;
 
     [Header("Player Movement")]
-    private bool canMove = true;
+    public bool canMove = true;
+    public bool canJump = true;
     public float playerSpeed = 1.5f;
     public float playerSprint = 3.0f;
     public bool isAiming;
@@ -38,6 +39,11 @@ public class PlayerMovementScript : MonoBehaviour
     public float surfaceDistance = 0.4f;
     public LayerMask surfaceMask;
 
+    public GameObject gameOverUI;
+
+    public Rifle rifle;
+
+
     //[Header("Player Gravity")]
     // Start is called before the first frame update
     void Start()
@@ -56,7 +62,6 @@ public class PlayerMovementScript : MonoBehaviour
         animator.SetBool("Reloading", false);
         animator.SetBool("RifleWalk", false);
         animator.SetBool("FireWalk", false);
-        animator.SetBool("Punch", false);
         animator.SetBool("WalkReload", false);
     }
 
@@ -81,11 +86,13 @@ public class PlayerMovementScript : MonoBehaviour
         if (canMove)
         {
             PlayerMovement();
+            Sprint();
+        }
+        if (canJump)
+        {
+            JumpStart();
         }
 
-        Jump();
-
-        Sprint();
     }
 
     private void PlayerMovement()
@@ -139,7 +146,7 @@ public class PlayerMovementScript : MonoBehaviour
         }
     }
 
-    private void Jump()
+    private void JumpStart()
     {
         if (Input.GetButtonDown("Jump") && onSurface)
         {
@@ -149,15 +156,40 @@ public class PlayerMovementScript : MonoBehaviour
         }
         else
         {
-             animator.SetBool("Idle", true);
+            animator.SetBool("Idle", true);
             animator.ResetTrigger("Jump");
         }
+    }
+
+    public void noJump()
+    {
+        canJump = false;
+    }
+
+    public void setJump()
+    {
+        canJump = true;
+    }
+
+    public void noMove()
+    {
+        canMove = false;
+    }
+    public void setMove()
+    {
+        canMove = true;
+    }
+
+    public void ReloadEnd()
+    {
+        rifle.ReloadEnd();
     }
 
     private void Sprint()
     {
         if (Input.GetButton("Sprint") && (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow)) && onSurface)
         {
+            animator.SetBool("Walk", false);
             animator.SetBool("Running", true);
             float horizontalAxis = Input.GetAxisRaw("Horizontal");
             float verticalAxis = Input.GetAxisRaw("Vertical");
@@ -195,8 +227,9 @@ public class PlayerMovementScript : MonoBehaviour
 
     private void PlayerDie()
     {
+        gameOverUI.SetActive(true);
+        Time.timeScale = 0f;
         Cursor.lockState = CursorLockMode.None;
-
         Destroy(gameObject, 1.0f);
     }
 
