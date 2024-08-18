@@ -7,7 +7,7 @@ public class AmmoPickUp : MonoBehaviour
     [Header("AmmoPickUp")]
     public Rifle rifle;
     private int magPickUpAmount = 15;
-    private float rangeRadius = 2.5f;
+    private float rangeRadius = 1.5f;
 
     [Header("Sounds")]
     public AudioClip ammoPickUpSound;

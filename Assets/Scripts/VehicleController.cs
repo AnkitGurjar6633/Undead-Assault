@@ -38,6 +38,7 @@ public class VehicleController : MonoBehaviour
     public GameObject AimCam;
     public GameObject AimCanvas;
     public GameObject Player;
+    public GameObject objective4;
 
     [Header("Vehicle Hitting")]
     public float hitRange = 3f;
@@ -64,6 +65,7 @@ public class VehicleController : MonoBehaviour
             ThirdPersonCanvas.SetActive(false);
             AimCam.SetActive(false);
             AimCanvas.SetActive(false);
+            objective4.SetActive(true);
 
             MoveVehicle();
             VehicleSteering();
@@ -77,6 +79,7 @@ public class VehicleController : MonoBehaviour
             ThirdPersonCanvas.SetActive(true);
             AimCam.SetActive(true);
             AimCanvas.SetActive(true);
+            objective4.SetActive(false);
         }
 
 

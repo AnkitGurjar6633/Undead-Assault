@@ -66,7 +66,14 @@ public class SwitchCamera : MonoBehaviour
             aimCam.SetActive(false);
             aimCamCrosshair.SetActive(false);
             thirdPersonCam.SetActive(true);
-            thirdPersonCamCrosshair.SetActive(true);
+            if (Menus.isGameStopped)
+            {
+                thirdPersonCamCrosshair.SetActive(false);
+            }
+            else
+            {
+                thirdPersonCamCrosshair.SetActive(true);
+            }
         }
     }
 }

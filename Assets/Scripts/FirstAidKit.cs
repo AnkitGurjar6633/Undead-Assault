@@ -7,7 +7,7 @@ public class FirstAidKit : MonoBehaviour
     [Header("FirstAidKit")]
     public PlayerMovementScript player;
     private float healthRestoreAmount = 200f;
-    private float rangeRadius = 2.5f;
+    private float rangeRadius = 1.5f;
 
     [Header("Sounds")]
     public AudioClip firstAidKitSound;

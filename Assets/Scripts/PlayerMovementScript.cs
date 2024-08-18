@@ -32,6 +32,7 @@ public class PlayerMovementScript : MonoBehaviour
     [Header("Player Gravity, Jumping and Velocity")]
     public float turnCalmTime = 0.1f;
     float turnCalmVelocity;
+    float turnCalmVelocity_A;
     float gravity = -9.8f;
     public float jumpRange = 1f;
     Vector3 velocity;
@@ -99,6 +100,10 @@ public class PlayerMovementScript : MonoBehaviour
 
         HandleRifleState();
 
+        if(isAiming || isFiring)
+        {
+            HandleTurnWithFiringAiming();
+        }
     }
 
     private void PlayerMovement()
@@ -117,14 +122,14 @@ public class PlayerMovementScript : MonoBehaviour
 
                 float targetAngle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg + playerCamera.eulerAngles.y;
                 float angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref turnCalmVelocity, turnCalmTime);
-            
 
-            //if (!isAiming)
-            //{
+
+            if (!isAiming && !isFiring)
+            {
 
                 transform.rotation = Quaternion.Euler(0, angle, 0);
 
-            //}
+            }
 
 
             Vector3 moveDirection = Quaternion.Euler(0,targetAngle,0) * Vector3.forward;
@@ -262,6 +267,12 @@ public class PlayerMovementScript : MonoBehaviour
         }
     }
 
+    public void HandleTurnWithFiringAiming()
+    {
+        float targetAngle = Mathf.SmoothDampAngle(transform.eulerAngles.y, playerCamera.eulerAngles.y, ref turnCalmVelocity_A, turnCalmTime);
+
+        transform.rotation = Quaternion.Euler(0, targetAngle, 0);
+    }
 
 
 }

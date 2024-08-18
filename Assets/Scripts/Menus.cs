@@ -10,9 +10,11 @@ public class Menus : MonoBehaviour
     public GameObject pauseMenuUI;
     public GameObject gameOverMenuUI;
     public GameObject objectivesUI;
-    
-    
+
+    [Header("Misc")]
     public static bool isGameStopped;
+    //public GameObject aimCanvas;
+    //public GameObject tpsCanvas;
     
     // Start is called before the first frame update
     void Start()
@@ -53,6 +55,8 @@ public class Menus : MonoBehaviour
     public void ShowObjectivesUI()
     {
         objectivesUI.SetActive(true);
+        //aimCanvas.SetActive(false);
+        //tpsCanvas.SetActive(false);
         Time.timeScale = 0f;
         isGameStopped = true;
     }
@@ -60,6 +64,8 @@ public class Menus : MonoBehaviour
     public void HideObjectivesUI()
     {
         objectivesUI.SetActive(false);
+        //aimCanvas.SetActive(true);
+        //tpsCanvas.SetActive(true);
         Time.timeScale = 1f;
         //Cursor.lockState = CursorLockMode.Locked;
         isGameStopped = false;
@@ -68,6 +74,8 @@ public class Menus : MonoBehaviour
     public void Resume()
     {
         pauseMenuUI.SetActive(false);
+        //aimCanvas.SetActive(true);
+        //tpsCanvas.SetActive(true);
         Time.timeScale = 1f;
         //Cursor.lockState= CursorLockMode.Locked;
         isGameStopped = false;
@@ -92,6 +100,8 @@ public class Menus : MonoBehaviour
     void Pause()
     {
         pauseMenuUI.SetActive(true);
+        //aimCanvas.SetActive(false);
+        //tpsCanvas.SetActive(false);
         Time.timeScale = 0f;
         isGameStopped = true;
     }
