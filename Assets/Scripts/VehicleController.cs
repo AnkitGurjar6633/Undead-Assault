@@ -47,18 +47,35 @@ public class VehicleController : MonoBehaviour
     public GameObject destroyEffect;
     public Camera cam;
 
+    //Vector3 bound;
 
+    private void Awake()
+    {
+        //bound = gameObject.transform.eulerAngles;
+    }
     // Start is called before the first frame update
     void Start()
     {
-        
     }
 
     // Update is called once per frame
     void Update()
     {
+        //bound = transform.eulerAngles;
+        //if (gameObject.transform.eulerAngles.z < -35)
+        //{
+        //    bound.z = -35;
+        //    gameObject.transform.eulerAngles = bound;
+        //}
+        
+        //if (transform.eulerAngles.z > 35)
+        //{
+        //    bound.z = 35;
+        //    gameObject.transform.eulerAngles = bound;
+        //}
 
-        if(isInVehicle)
+
+        if (isInVehicle)
         {
             Player.SetActive(false);
             ThirdPersonCam.SetActive(false);

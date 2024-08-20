@@ -5,10 +5,12 @@ using UnityEngine.SceneManagement;
 
 public class MainMenu : MonoBehaviour
 {
+    public Animator animator;
     // Start is called before the first frame update
     void Start()
     {
-        
+        animator.Rebind();
+        animator.Update(0f);
     }
 
     // Update is called once per frame
@@ -19,7 +21,7 @@ public class MainMenu : MonoBehaviour
 
     public void Play()
     {
-        SceneManager.LoadScene("UndeadAssault");
+        SceneManager.LoadScene("UndeadAssault", LoadSceneMode.Single);
     }
 
     public void Options()

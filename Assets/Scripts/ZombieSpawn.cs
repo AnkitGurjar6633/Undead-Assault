@@ -9,7 +9,7 @@ public class ZombieSpawn : MonoBehaviour
     public GameObject[] zombiePrefabs;
     public Transform[] spawnPositions;
     public GameObject dangerZoneUI;
-    float spawnCycle = 15f;
+    float spawnCycle = 5f;
 
     [Header("Sounds")]
     public AudioClip dangerZoneSound;
@@ -34,7 +34,7 @@ public class ZombieSpawn : MonoBehaviour
             InvokeRepeating("SpawnEnemy", 1f, spawnCycle);
             audioSource.PlayOneShot(dangerZoneSound);
             StartCoroutine(ShowDangerZoneUI());
-            Destroy(gameObject, 150f);
+            Destroy(gameObject, 50f);
             gameObject.GetComponent<BoxCollider>().enabled = false;
         }
     }

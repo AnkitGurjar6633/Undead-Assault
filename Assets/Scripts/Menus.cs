@@ -13,13 +13,13 @@ public class Menus : MonoBehaviour
 
     [Header("Misc")]
     public static bool isGameStopped;
-    //public GameObject aimCanvas;
-    //public GameObject tpsCanvas;
-    
+    public GameObject aimCanvas;
+    public GameObject tpsCanvas;
+
+
     // Start is called before the first frame update
     void Start()
     {
-        
     }
 
     // Update is called once per frame
@@ -55,8 +55,8 @@ public class Menus : MonoBehaviour
     public void ShowObjectivesUI()
     {
         objectivesUI.SetActive(true);
-        //aimCanvas.SetActive(false);
-        //tpsCanvas.SetActive(false);
+        aimCanvas.SetActive(false);
+        tpsCanvas.SetActive(false);
         Time.timeScale = 0f;
         isGameStopped = true;
     }
@@ -64,31 +64,38 @@ public class Menus : MonoBehaviour
     public void HideObjectivesUI()
     {
         objectivesUI.SetActive(false);
-        //aimCanvas.SetActive(true);
-        //tpsCanvas.SetActive(true);
+        aimCanvas.SetActive(true);
+        tpsCanvas.SetActive(true);
         Time.timeScale = 1f;
-        //Cursor.lockState = CursorLockMode.Locked;
+        Cursor.lockState = CursorLockMode.Locked;
         isGameStopped = false;
     }
 
     public void Resume()
     {
         pauseMenuUI.SetActive(false);
-        //aimCanvas.SetActive(true);
-        //tpsCanvas.SetActive(true);
+        aimCanvas.SetActive(true);
+        tpsCanvas.SetActive(true);
         Time.timeScale = 1f;
-        //Cursor.lockState= CursorLockMode.Locked;
+        Cursor.lockState = CursorLockMode.Locked;
         isGameStopped = false;
     }
 
     public void Restart()
     {
-        SceneManager.LoadScene("UndeadAssault");
+        SceneManager.LoadScene("UndeadAssault", LoadSceneMode.Single);
+        Time.timeScale = 1f;
+        gameOverMenuUI.SetActive(false);
+        isGameStopped = false;
     }
 
     public void ShowMainMenu()
     {
-        SceneManager.LoadScene("MainMenu");
+        SceneManager.LoadScene("MainMenu", LoadSceneMode.Single);
+        Time.timeScale = 1f;
+        pauseMenuUI.SetActive(false);
+        isGameStopped = false;
+
     }
 
     public void QuitGame()
@@ -100,8 +107,8 @@ public class Menus : MonoBehaviour
     void Pause()
     {
         pauseMenuUI.SetActive(true);
-        //aimCanvas.SetActive(false);
-        //tpsCanvas.SetActive(false);
+        aimCanvas.SetActive(false);
+        tpsCanvas.SetActive(false);
         Time.timeScale = 0f;
         isGameStopped = true;
     }

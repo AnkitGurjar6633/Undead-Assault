@@ -34,8 +34,11 @@ public class Zombie2 : MonoBehaviour
     public bool playerInVisionRadius;
     public bool playerInAttackingRadius;
 
+
+    Vector3 bound;
     private void Awake()
     {
+        bound = new Vector3(0,transform.eulerAngles.y,0);
         currentHealth = maxHealth;
         healthBar.SetFullHealth(maxHealth);
         zombieAgent = GetComponent<NavMeshAgent>();
@@ -71,6 +74,8 @@ public class Zombie2 : MonoBehaviour
         {
             AttackPlayer();
         }
+        bound.y = transform.eulerAngles.y;
+        transform.eulerAngles = bound;
     }
 
     void Idle()
